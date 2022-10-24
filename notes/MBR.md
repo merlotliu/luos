@@ -9,7 +9,7 @@ comments: true
 
 # MBR
 
-
+主引导记录（主引导扇区）
 
 
 
