@@ -95,9 +95,22 @@ typedef struct
 
 
 
+用nasm -hf查看nasm的输出文件格式发现elf格式的种类主要有如下几种：
+elf32 ELF32 (i386) object files (e.g. Linux)
+elf64 ELF64 (x86_64) object files (e.g. Linux)
+elf ELF (short name for ELF32)
 
+原来是那三个可重定位文件都是32位的，而我在64位的Linux系统下使用gcc和ld，默认生成64位的可执行文件。
+用ld --help命令查看ld的输出文件格式，其中有提到：
+ld: supported emulations: elf_x86_64 elf32_x86_64 elf_i386 elf_iamcu i386linux elf_l1om elf_k1om i386pep i386pe
 
+先将start.c编译成32位的可重定位文件，再进行链接，链接时指定生成32位的文件：
 
+```shell
+gcc -m32 -c start.c -o start.o -fno-builtin-memcpy
+ld -m elf_i386 -s -Ttext 0x30400 -o kernel.bin kernel.o kliba.o string.o start.o
+
+```
 
 
 
